@@ -17,35 +17,63 @@ namespace WCFServicioRebel
         private readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public string registerRebel(string name, string planet)
         {
-            string mensaje = "";
-            Rebel obj = new Rebel();
-            if (!NotRepeat(name,planet))
+            string message = "";
+            Log.Debug("In function registerRebel");
+            try
             {
-                Log.Info("The rebeld isn't repeat!");
-                obj.name = name;
-                obj.planet = planet;
-                LRebels.Add(obj);
-                obj.GrabarArchivo(LRebels);
-                mensaje = "Rebel save correctly";
-            }
-            else
-            {
-                mensaje = "Rebel doesn't save correctly";
-            }
-            return mensaje;
-        }
-
-        private bool NotRepeat(string name, string planet)
-        {
-            bool resp = false;
-            for(int i = 0; i < LRebels.Count; i++)
-            {
-                if(LRebels[i].name == name && LRebels[i].planet == planet)
+                
+                Rebel obj = new Rebel();
+                if (!notRepeat(name, planet))
                 {
-                    resp = true;
-                    Log.Info("The rebeld is repeat!");
+                    Log.Info("The rebeld isn't repeat!");
+                    obj.name = name;
+                    obj.planet = planet;
+                    LRebels.Add(obj);
+
+                    if (obj.SaveFile(LRebels))
+                    {
+                        message = "Rebel save correctly";
+                    }
+                    else
+                    {
+                        message = "Error. Can't to save the Rebel";
+                    }
+                     
+                }
+                else
+                {
+                    message = "The rebel is repeat";
                 }
             }
+            catch(Exception exp)
+            {
+                Log.Error("Can't register the rebel correctly", exp);
+                message = "Error: "+exp.ToString();
+            }
+            
+            return message;
+        }
+
+        private bool notRepeat(string name, string planet)
+        {
+            bool resp = false;
+            Log.Debug("In function NotRepeat");
+            try
+            {
+                foreach (Rebel reb in LRebels)
+                {
+                    if (reb.name == name && reb.planet == planet)
+                    {
+                        resp = true;
+                        Log.Info("The rebeld is repeat!");
+                    }
+                }
+            }
+            catch(Exception exp)
+            {
+                Log.Error("Error Function NotRepeat", exp);
+            }
+           
             return resp;
         }
     }
