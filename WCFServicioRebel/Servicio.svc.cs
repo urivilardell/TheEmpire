@@ -8,8 +8,7 @@ using WCFServicioRebel.CLASES;
 
 namespace WCFServicioRebel
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "Servicio" en el código, en svc y en el archivo de configuración a la vez.
-    // NOTA: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione Servicio.svc o Servicio.svc.cs en el Explorador de soluciones e inicie la depuración.
+   
     [ServiceBehavior (InstanceContextMode = InstanceContextMode.Single)]
     public class Servicio : IServicio
     {
